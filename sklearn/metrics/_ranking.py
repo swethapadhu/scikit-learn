@@ -218,7 +218,7 @@ def average_precision_score(y_true, y_score, *, average="macro", pos_label=1,
                                  average, sample_weight=sample_weight)
 
 
-def mean_average_precision(y_true, y_score, *, average="macro", sample_weight=None):
+def mean_average_precision_score(y_true, y_score, *, average="macro", sample_weight=None):
     """Compute mean average precision (mAP) from prediction scores for multi-
         class classification
 

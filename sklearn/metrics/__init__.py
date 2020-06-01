@@ -10,7 +10,7 @@ from ._ranking import coverage_error
 from ._ranking import dcg_score
 from ._ranking import label_ranking_average_precision_score
 from ._ranking import label_ranking_loss
-from ._ranking import mean_average_precision
+from ._ranking import mean_average_precision_score
 from ._ranking import ndcg_score
 from ._ranking import precision_recall_curve
 from ._ranking import roc_auc_score
@@ -80,6 +80,8 @@ from ._plot.roc_curve import plot_roc_curve
 from ._plot.roc_curve import RocCurveDisplay
 from ._plot.precision_recall_curve import plot_precision_recall_curve
 from ._plot.precision_recall_curve import PrecisionRecallDisplay
+from ._plot.multiclass_precision_recall_curve import plot_multiclass_precision_recall_curve
+from ._plot.multiclass_precision_recall_curve import MultiClassPrecisionRecallDisplay
 
 from ._plot.confusion_matrix import plot_confusion_matrix
 from ._plot.confusion_matrix import ConfusionMatrixDisplay
@@ -123,7 +125,7 @@ __all__ = [
     'matthews_corrcoef',
     'max_error',
     'mean_absolute_error',
-    'mean_average_precision',
+    'mean_average_precision_score',
     'mean_squared_error',
     'mean_squared_log_error',
     'mean_poisson_deviance',
@@ -140,6 +142,7 @@ __all__ = [
     'pairwise_distances_chunked',
     'pairwise_kernels',
     'plot_confusion_matrix',
+    'plot_multiclass_precision_recall_curve',
     'plot_precision_recall_curve',
     'plot_roc_curve',
     'PrecisionRecallDisplay',
