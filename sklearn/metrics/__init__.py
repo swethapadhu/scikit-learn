@@ -10,6 +10,7 @@ from ._ranking import coverage_error
 from ._ranking import dcg_score
 from ._ranking import label_ranking_average_precision_score
 from ._ranking import label_ranking_loss
+from ._ranking import mean_average_precision
 from ._ranking import ndcg_score
 from ._ranking import precision_recall_curve
 from ._ranking import roc_auc_score
@@ -122,6 +123,7 @@ __all__ = [
     'matthews_corrcoef',
     'max_error',
     'mean_absolute_error',
+    'mean_average_precision',
     'mean_squared_error',
     'mean_squared_log_error',
     'mean_poisson_deviance',
