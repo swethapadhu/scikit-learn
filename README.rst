@@ -1,3 +1,11 @@
+### FEATURE ADDITIONS
+
+1. Added multiclass precision-recall curve plotting functionality. (sklearn/metrics/_plot/multiclass_precision_recall_curve.py)
+2. Added mAP score for multiclass classifiers. (sklearn/metrics/_ranking.py)
+
+Run: python classifier.py in the projects folder
+
+
 .. -*- mode: rst -*-
 
 |Azure|_ |Travis|_ |Codecov|_ |CircleCI|_ |PythonVersion|_ |PyPi|_ |DOI|_
