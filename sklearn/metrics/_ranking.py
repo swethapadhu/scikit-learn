@@ -288,13 +288,13 @@ def mean_average_precision_score(y_true, y_score, *, average="macro", sample_wei
     if y_type == "binary":
         raise ValueError("Labels correspond to binary classification."
                          "Mean average precision can be computed"
-                         "only for multiclass and multilabel classification tasks.")
+                         "only for multiclass classification tasks.")
 
     n_classes = y_true.shape[1]
     average_precision = []
     for i in range(n_classes):
         average_precision.append(average_precision_score(y_true[:, i], y_score[:, i],
-                                 pos_label=1, average=average, sample_weight=sample_weight))
+                                 average=average, sample_weight=sample_weight))
 
     return np.mean(average_precision)
 
