@@ -225,13 +225,12 @@ def mean_average_precision_score(y_true, y_score, *, average="macro", sample_wei
         mAP for a multi-class classifier is the mean of the average precision scores
         of every class.
 
-        Note: this implementation is restricted to multi-class OVR classification or
-        multilabel classification task.
+        Note: this implementation is restricted to multi-class OVR classification.
 
         Parameters
         ----------
         y_true : array, shape = [n_samples, n_classes]
-            True binary labels or binary label indicators.
+            True multiclass label indicators.
 
         y_score : array, shape = [n_samples, n_classes]
             Target scores, can either be probability estimates of the positive
@@ -253,8 +252,6 @@ def mean_average_precision_score(y_true, y_score, *, average="macro", sample_wei
                 by support (the number of true instances for each label).
             ``'samples'``:
                 Calculate metrics for each instance, and find their average.
-
-            Will be ignored when ``y_true`` is binary.
 
         sample_weight : array-like of shape (n_samples,), default=None
             Sample weights.
@@ -279,10 +276,10 @@ def mean_average_precision_score(y_true, y_score, *, average="macro", sample_wei
         Examples
         --------
         >>> import numpy as np
-        >>> from sklearn.metrics import mean_average_precision
+        >>> from sklearn.metrics import mean_average_precision_score
         >>> y_true = np.array([[0, 1], [1, 0]])
         >>> y_scores = np.array([[0.1, 0.8], [0.35, 0.8]])
-        >>> mean_average_precision(y_true, y_scores)
+        >>> mean_average_precision_score(y_true, y_scores)
         0.75...
 
         """
@@ -299,7 +296,7 @@ def mean_average_precision_score(y_true, y_score, *, average="macro", sample_wei
         average_precision.append(average_precision_score(y_true[:, i], y_score[:, i],
                                  pos_label=1, average=average, sample_weight=sample_weight))
 
-    return np.mean(np.array(average_precision))
+    return np.mean(average_precision)
 
 
 def _binary_roc_auc_score(y_true, y_score, sample_weight=None, max_fpr=None):
