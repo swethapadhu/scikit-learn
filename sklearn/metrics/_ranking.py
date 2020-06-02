@@ -192,6 +192,7 @@ def average_precision_score(y_true, y_score, *, average="macro", pos_label=1,
       Instead of linearly interpolating between operating points, precisions
       are weighted by the change in recall since the last operating point.
     """
+
     def _binary_uninterpolated_average_precision(
             y_true, y_score, pos_label=1, sample_weight=None):
         precision, recall, _ = precision_recall_curve(
@@ -217,6 +218,87 @@ def average_precision_score(y_true, y_score, *, average="macro", pos_label=1,
                                  average, sample_weight=sample_weight)
 
 
+def mean_average_precision_score(y_true, y_score, *, average="macro", sample_weight=None):
+    """Compute mean average precision (mAP) from prediction scores for multi-
+        class classification
+
+        mAP for a multi-class classifier is the mean of the average precision scores
+        of every class.
+
+        Note: this implementation is restricted to multi-class OVR classification.
+
+        Parameters
+        ----------
+        y_true : array, shape = [n_samples, n_classes]
+            True multiclass label indicators.
+
+        y_score : array, shape = [n_samples, n_classes]
+            Target scores, can either be probability estimates of the positive
+            class, confidence values, or non-thresholded measure of decisions
+            (as returned by "decision_function" on some classifiers).
+
+        average : string, [None, 'micro', 'macro' (default), 'samples', 'weighted']
+            If ``None``, the scores for each class are returned. Otherwise,
+            this determines the type of averaging performed on the data:
+
+            ``'micro'``:
+                Calculate metrics globally by considering each element of the label
+                indicator matrix as a label.
+            ``'macro'``:
+                Calculate metrics for each label, and find their unweighted
+                mean.  This does not take label imbalance into account.
+            ``'weighted'``:
+                Calculate metrics for each label, and find their average, weighted
+                by support (the number of true instances for each label).
+            ``'samples'``:
+                Calculate metrics for each instance, and find their average.
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            Sample weights.
+
+        Returns
+        -------
+        mean_average_precision : float
+
+        References
+        ----------
+        .. [1] `Wikipedia entry for the Mean Average precision
+               <https://en.wikipedia.org/w/index.php?title=Information_retrieval&
+               oldid=793358396#Mean_average_precision>`_
+
+        See also
+        --------
+        average_precision : Compute the area under the ROC curve
+
+        precision_recall_curve :
+            Compute precision-recall pairs for different probability thresholds
+
+        Examples
+        --------
+        >>> import numpy as np
+        >>> from sklearn.metrics import mean_average_precision_score
+        >>> y_true = np.array([[0, 1], [1, 0]])
+        >>> y_scores = np.array([[0.1, 0.8], [0.35, 0.8]])
+        >>> mean_average_precision_score(y_true, y_scores)
+        0.75...
+
+        """
+    check_consistent_length(y_true, y_score)
+    y_type = type_of_target(y_true)
+    if y_type == "binary":
+        raise ValueError("Labels correspond to binary classification."
+                         "Mean average precision can be computed"
+                         "only for multiclass and multilabel classification tasks.")
+
+    n_classes = y_true.shape[1]
+    average_precision = []
+    for i in range(n_classes):
+        average_precision.append(average_precision_score(y_true[:, i], y_score[:, i],
+                                 pos_label=1, average=average, sample_weight=sample_weight))
+
+    return np.mean(average_precision)
+
+
 def _binary_roc_auc_score(y_true, y_score, sample_weight=None, max_fpr=None):
     """Binary roc auc score"""
     if len(np.unique(y_true)) != 2:
@@ -240,7 +322,7 @@ def _binary_roc_auc_score(y_true, y_score, sample_weight=None, max_fpr=None):
 
     # McClish correction: standardize result to be 0.5 if non-discriminant
     # and 1 if maximal
-    min_area = 0.5 * max_fpr**2
+    min_area = 0.5 * max_fpr ** 2
     max_area = max_fpr
     return 0.5 * (1 + (partial_auc - min_area) / (max_area - min_area))
 
@@ -456,7 +538,7 @@ def _multiclass_roc_auc_score(y_true, y_score, labels,
         raise ValueError("multi_class='{0}' is not supported "
                          "for multiclass ROC AUC, multi_class must be "
                          "in {1}".format(
-                                multi_class, multiclass_options))
+            multi_class, multiclass_options))
 
     if labels is not None:
         labels = column_or_1d(labels)
@@ -564,7 +646,7 @@ def _binary_clf_curve(y_true, y_score, pos_label=None, sample_weight=None):
                          "pos_label is not specified: either make y_true "
                          "take value in {{0, 1}} or {{-1, 1}} or "
                          "pass pos_label explicitly.".format(
-                             classes_repr=classes_repr))
+            classes_repr=classes_repr))
     elif pos_label is None:
         pos_label = 1.
 
