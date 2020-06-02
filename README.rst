@@ -1,4 +1,4 @@
-### FEATURE ADDITIONS
+FEATURE ADDITIONS
 
 1. Added multiclass precision-recall curve plotting functionality. (sklearn/metrics/_plot/multiclass_precision_recall_curve.py)
 2. Added mAP score for multiclass classifiers. (sklearn/metrics/_ranking.py)
